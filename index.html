@@ -372,7 +372,7 @@ docker start mon-nginx</code></pre>
                         <div class="code-block p-4 rounded-lg">
                             <pre><code># Exemple Dockerfile complet
 FROM ubuntu:20.04
-LABEL maintainer="tvaira@free.fr"
+LABEL maintainer="badara@free.fr"
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y g++ make git
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -839,16 +839,16 @@ WORKDIR /src
 CMD ["make", "tests"]
 
 # Construire l'image
-docker build -t tvaira/ubuntu-dev .
+docker build -t badara/ubuntu-dev .
 
 # Exécuter le conteneur
-docker run -t tvaira/ubuntu-dev
+docker run -t badara/ubuntu-dev
 
 # Shell interactif
-docker run -ti tvaira/ubuntu-dev /bin/bash
+docker run -ti badara/ubuntu-dev /bin/bash
 
 # Utiliser un volume pour ne pas reconstruire l'image
-docker run --rm -t -v .:/src tvaira/ubuntu-dev</code></pre>
+docker run --rm -t -v .:/src badara/ubuntu-dev</code></pre>
                         </div>
                     </div>
 
@@ -856,21 +856,21 @@ docker run --rm -t -v .:/src tvaira/ubuntu-dev</code></pre>
                         <h3 class="text-2xl font-semibold text-gray-800 mb-4">8.4 Création et publication d'image (Bonus)</h3>
                         <div class="code-block p-4 rounded-lg">
                             <pre><code># Modifier un conteneur (ex: installer des paquets)
-docker run -it tvaira/ubuntu-dev /bin/bash
+docker run -it badara/ubuntu-dev /bin/bash
 root@54fa5656a835:/# apt update
 root@54fa5656a835:/# apt install clang-format doxygen
 root@54fa5656a835:/# exit
 
 # Commit d'une nouvelle image
-docker commit -m "ajout clang-format et doxygen" -a "tvaira" \
-  54fa5656a835 tvaira/ubuntu-dev:latest
+docker commit -m "ajout clang-format et doxygen" -a "badara" \
+  54fa5656a835 badara/ubuntu-dev:latest
 
 # Se connecter à Docker Hub
-docker login -u tvaira
+docker login -u badara
 
 # Tag et push
 docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
-docker push tvaira/ubuntu-dev</code></pre>
+docker push badara/ubuntu-dev</code></pre>
                         </div>
                     </div>
                 </div>
@@ -1244,7 +1244,7 @@ docker system prune</code></pre>
                         <p class="mb-4">Modifier un conteneur, créer une nouvelle image et la publier sur Docker Hub.</p>
                         <div class="code-block p-4 rounded-lg">
                             <pre><code># 1. Modifier un conteneur
-docker run -it tvaira/ubuntu-dev /bin/bash
+docker run -it badara/ubuntu-dev /bin/bash
 root@container:/# apt update
 root@container:/# apt install clang-format doxygen
 root@container:/# exit
@@ -1297,7 +1297,7 @@ docker push votre_nom/ubuntu-dev</code></pre>
     <footer class="bg-gray-800 text-white py-8 px-4 mt-8">
         <div class="max-w-6xl mx-auto text-center">
             <p class="text-xl mb-2">🐳 Cours sur la Conteneurisation et Docker</p>
-            <p class="text-gray-400">Thierry Vaira : thierry.vaira@gmail.com</p>
+            <p class="text-gray-400">Badara : bbabadara@gmail.com</p>
         </div>
     </footer>
 
