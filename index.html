@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours: Conteneurisation et Docker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .section { display: none; }
+        .section.active { display: block; }
+        .nav-item.active { background-color: #3B82F6; color: white; }
+        .code-block { background: #1e293b; color: #e2e8f0; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-8 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-4xl font-bold mb-2">🐳 Conteneurisation et Docker</h1>
+            <p class="text-xl opacity-90">Cours complet : concepts, architecture, manipulations et TP</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex overflow-x-auto space-x-2 py-3" id="navTabs">
+                <button onclick="showSection(0)" class="nav-item active px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">1. Conteneurisation</button>
+                <button onclick="showSection(1)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">2. VM vs Container</button>
+                <button onclick="showSection(2)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">3. Docker</button>
+                <button onclick="showSection(3)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">4. Composants</button>
+                <button onclick="showSection(4)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">5. Cycle de vie</button>
+                <button onclick="showSection(5)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">6. Commandes</button>
+                <button onclick="showSection(6)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">7. Docker Compose</button>
+                <button onclick="showSection(7)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">8. Manipulations</button>
+                <button onclick="showSection(8)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">9. Réseau</button>
+                <button onclick="showSection(9)" class="nav-item px-4 py-2 rounded-lg whitespace-nowrap hover:bg-blue-100 transition">10. TP</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        
+        <!-- Section 1: Conteneurisation -->
+        <section class="section active" id="section-0">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">1. La Conteneurisation</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">1.1 Qu'est-ce que la conteneurisation ?</h3>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                        <p class="text-lg mb-4">La <strong>conteneurisation</strong> est une technologie qui permet d'empaqueter une application et toutes ses dépendances dans un conteneur isolé, léger et portable.</p>
+                        <p class="mb-4">Un conteneur regroupe :</p>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>Le code de l'application</li>
+                            <li>Les bibliothèques</li>
+                            <li>Les fichiers de configuration</li>
+                            <li>Les outils système nécessaires</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">1.2 Les caractéristiques des conteneurs</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                            <h4 class="text-xl font-bold text-green-800 mb-3">Flexible</h4>
+                            <p>Même les applications les plus complexes peuvent être conteneurisées.</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                            <h4 class="text-xl font-bold text-blue-800 mb-3">Léger</h4>
+                            <p>Les conteneurs exploitent et partagent le noyau hôte (efficaces en ressources vs VM).</p>
+                        </div>
+                        <div class="bg-purple-50 p-6 rounded-lg border border-purple-200">
+                            <h4 class="text-xl font-bold text-purple-800 mb-3">Portable</h4>
+                            <p>Créer localement, déployer sur le cloud et exécuter n'importe où.</p>
+                        </div>
+                        <div class="bg-orange-50 p-6 rounded-lg border border-orange-200">
+                            <h4 class="text-xl font-bold text-orange-800 mb-3">Faible couplage</h4>
+                            <p>Conteneurs autonomes et encapsulés (remplacement sans perturber les autres).</p>
+                        </div>
+                        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                            <h4 class="text-xl font-bold text-red-800 mb-3">Évolutif</h4>
+                            <p>Augmenter et distribuer automatiquement des répliques de conteneurs.</p>
+                        </div>
+                        <div class="bg-teal-50 p-6 rounded-lg border border-teal-200">
+                            <h4 class="text-xl font-bold text-teal-800 mb-3">Sécurisé</h4>
+                            <p>Contraintes et isolements appliqués aux processus sans configuration requise.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">1.3 Les limites de la conteneurisation</h3>
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-bold text-red-800">Isolation moins forte que les VM</h4>
+                                <p>Les conteneurs partagent le noyau du système hôte.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-red-800">Sécurité</h4>
+                                <p>Une faille dans le moteur peut affecter tous les conteneurs.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-red-800">Complexité</h4>
+                                <p>Gérer des centaines de conteneurs nécessite Kubernetes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: VM vs Container -->
+        <section class="section" id="section-1">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">2. Différence entre Machine Virtuelle et Container</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">2.1 Machine Virtuelle (VM)</h3>
+                    <div class="bg-gray-100 p-6 rounded-lg">
+                        <p class="mb-4">Une VM exécute un système d'exploitation « invité » complet avec un accès virtuel aux ressources de l'hôte via un hyperviseur. Les VM consomment plus de ressources mais offrent une meilleure isolation.</p>
+                        <div class="code-block p-4 rounded-lg mb-4 overflow-x-auto">
+                            <pre><code>Architecture VM:
+┌─────────────────────────────────┐
+│        Application A            │
+├─────────────────────────────────┤
+│        OS Invité (Guest OS)     │
+├─────────────────────────────────┤
+│     Hyperviseur (VMware, etc.)  │
+├─────────────────────────────────┤
+│        OS Hôte (Host OS)        │
+├─────────────────────────────────┤
+│        Infrastructure           │
+└─────────────────────────────────┘</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">2.2 Container</h3>
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <p class="mb-4">Un conteneur s'exécute nativement sous Linux et partage le noyau de la machine hôte. Il exécute un processus unique, ce qui le rend léger.</p>
+                        <div class="code-block p-4 rounded-lg mb-4 overflow-x-auto">
+                            <pre><code>Architecture Container:
+┌──────────────────┬──────────────────┐
+│   Container A    │   Container B    │
+│  ┌────────────┐  │  ┌────────────┐  │
+│  │ Application│  │  │ Application│  │
+│  ├────────────┤  │  ├────────────┤  │
+│  │ Biblioth.  │  │  │ Biblioth.  │  │
+│  └────────────┘  │  └────────────┘  │
+├──────────────────┴──────────────────┤
+│      Docker Engine / Runtime        │
+├─────────────────────────────────────┤
+│      OS Hôte (Kernel partagé)       │
+├─────────────────────────────────────┤
+│         Infrastructure              │
+└─────────────────────────────────────┘</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">2.3 Comparaison</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse bg-white shadow rounded-lg">
+                            <thead class="bg-blue-600 text-white">
+                                <tr>
+                                    <th class="p-4 text-left">Critère</th>
+                                    <th class="p-4 text-left">VM</th>
+                                    <th class="p-4 text-left">Container</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50"><td class="p-4 font-semibold">Taille</td><td class="p-4">Lourde (Go)</td><td class="p-4">Légère (Mo)</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-4 font-semibold">Démarrage</td><td class="p-4">Lent (minutes)</td><td class="p-4">Rapide (secondes)</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-4 font-semibold">OS</td><td class="p-4">OS complet invité</td><td class="p-4">Partage le noyau hôte</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-4 font-semibold">Isolation</td><td class="p-4">Forte</td><td class="p-4">Moyenne (processus)</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-4 font-semibold">Performance</td><td class="p-4">Overhead important</td><td class="p-4">Proche du natif</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Docker -->
+        <section class="section" id="section-2">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">3. Présentation de Docker</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">3.1 Qu'est-ce que Docker ?</h3>
+                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-lg border border-blue-200">
+                        <p class="text-lg mb-4">Docker est une plate-forme open-source permettant de créer, exécuter et partager des applications avec des conteneurs. Écrit en <strong>Go</strong>, il profite des fonctionnalités du noyau Linux.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">3.2 docker-io vs docker-ce</h3>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-r-lg">
+                        <p class="mb-2"><code>docker-io</code> : version des dépôts officiels Debian/Ubuntu.</p>
+                        <p class="mb-2"><code>docker-ce</code> : version certifiée fournie par <strong>docker.com</strong> (Community Edition gratuite, Enterprise Edition payante).</p>
+                        <p><strong>On privilégiera docker-ce avec Ubuntu.</strong></p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">3.3 Installation sous Ubuntu</h3>
+                    <div class="mb-4">
+                        <h4 class="text-lg font-semibold mb-2">Supprimer une ancienne installation</h4>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>sudo apt remove docker docker-engine docker.io
+sudo snap remove docker</code></pre>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="text-lg font-semibold mb-2">Installation de docker-ce (officiel)</h4>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>sudo apt update
+sudo apt install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="text-lg font-semibold mb-2">Vérification</h4>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>systemctl status docker
+docker --version
+docker --help</code></pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2">Permission (ajouter l'utilisateur au groupe docker)</h4>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>sudo usermod -aG docker ${USER}
+su - ${USER}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">3.4 Docker Engine - Architecture</h3>
+                    <div class="bg-gray-800 text-white p-6 rounded-lg">
+                        <p class="mb-4">Docker Engine est une application client-serveur avec :</p>
+                        <ul class="space-y-2 list-disc list-inside mb-4">
+                            <li><strong>Daemon dockerd</strong> : processus serveur qui gère les conteneurs</li>
+                            <li><strong>CLI docker</strong> : interface en ligne de commande</li>
+                            <li><strong>REST API</strong> : interface pour les programmes</li>
+                        </ul>
+                        <div class="code-block p-4 rounded">
+                            <pre><code>Système à couches :
+dockerd (démon) → containerd → runc → kernel Linux (cgroups + namespaces)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">3.5 Technologie sous-jacente</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white border border-gray-200 p-6 rounded-lg">
+                            <h4 class="text-xl font-bold text-blue-800 mb-2">Namespaces (espaces de noms)</h4>
+                            <p>Isolent l'espace de travail du conteneur : <strong>pid</strong>, <strong>net</strong>, <strong>ipc</strong>, <strong>mnt</strong>, <strong>uts</strong>.</p>
+                        </div>
+                        <div class="bg-white border border-gray-200 p-6 rounded-lg">
+                            <h4 class="text-xl font-bold text-green-800 mb-2">Cgroups (groupes de contrôle)</h4>
+                            <p>Partagent les ressources matérielles et appliquent des limites et contraintes.</p>
+                        </div>
+                        <div class="bg-white border border-gray-200 p-6 rounded-lg">
+                            <h4 class="text-xl font-bold text-purple-800 mb-2">UnionFS</h4>
+                            <p>Système de fichiers en couches (AUFS, btrfs, vfs, DeviceMapper) rend les images légères et rapides.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">3.6 Un Conteneur = Un processus</h3>
+                    <div class="bg-indigo-50 p-6 rounded-lg border border-indigo-200">
+                        <p class="mb-3">Le principe de Docker implique qu'un conteneur représente un <strong>seul processus</strong> du système. Un processus peut cependant se "forker" en plusieurs processus.</p>
+                        <p><strong>Astuce :</strong> Il est possible de contourner ce principe en utilisant un gestionnaire de processus comme <code>supervisord</code> pour gérer plusieurs processus dans le même conteneur.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Composants -->
+        <section class="section" id="section-3">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">4. Les composants principaux de Docker</h2>
+                
+                <div class="space-y-8">
+                    <div class="border-l-4 border-blue-500 pl-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">4.1 Image Docker</h3>
+                        <p class="mb-4">Une image est un modèle (template) en lecture seule avec des instructions pour créer un conteneur. Souvent basée sur une autre image avec une personnalisation supplémentaire. Chaque instruction d'un Dockerfile crée un <strong>calque</strong> (layer) dans l'image.</p>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Lister les images
+docker images
+
+# Télécharger une image
+docker pull nginx:latest
+
+# Construire une image
+docker build -t mon-app:1.0 .
+
+# Rechercher une image
+docker search ubuntu
+docker search --filter "is-official=true" ubuntu</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-green-500 pl-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">4.2 Container</h3>
+                        <p class="mb-4">Un conteneur est une instance exécutable d'une image. Il est défini par son image et les options de configuration. On peut le connecter à des réseaux, y attacher du stockage, ou créer une nouvelle image depuis son état actuel.</p>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Créer et démarrer
+docker run -d --name mon-nginx nginx
+
+# Mode interactif
+docker run -it --name mon-ubuntu ubuntu:16.04 /bin/bash
+
+# Lister les conteneurs
+docker ps
+docker ps -a
+
+# Exécuter une commande dans un conteneur en cours
+docker exec -it mon-nginx sh
+
+# Arrêter / Démarrer
+docker stop mon-nginx
+docker start mon-nginx</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-purple-500 pl-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">4.3 Dockerfile</h3>
+                        <p class="mb-4">Fichier texte contenant les instructions pour construire une image. Chaque instruction crée un calque.</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-collapse bg-white shadow rounded-lg mb-4">
+                                <thead class="bg-purple-600 text-white">
+                                    <tr>
+                                        <th class="p-3 text-left">Instruction</th>
+                                        <th class="p-3 text-left">Description</th>
+                                        <th class="p-3 text-left">Exemple</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">FROM</td><td class="p-3">Image de base (obligatoire)</td><td class="p-3 font-mono">FROM ubuntu:20.04</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">RUN</td><td class="p-3">Exécute une commande pendant la construction</td><td class="p-3 font-mono">RUN apt-get install -y g++</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">COPY</td><td class="p-3">Copie des fichiers de l'hôte vers le conteneur</td><td class="p-3 font-mono">COPY . /src/</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">ADD</td><td class="p-3">Idem COPY + extraction auto d'archives</td><td class="p-3 font-mono">ADD . /src/</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">WORKDIR</td><td class="p-3">Définit le répertoire courant</td><td class="p-3 font-mono">WORKDIR /src</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">CMD</td><td class="p-3">Commande au démarrage du conteneur</td><td class="p-3 font-mono">CMD ["make", "tests"]</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">EXPOSE</td><td class="p-3">Expose un port</td><td class="p-3 font-mono">EXPOSE 3000</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">ENV</td><td class="p-3">Variable d'environnement</td><td class="p-3 font-mono">ENV LANG fr_FR.UTF-8</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">USER</td><td class="p-3">Définit l'utilisateur</td><td class="p-3 font-mono">USER iris</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">LABEL</td><td class="p-3">Métadonnées</td><td class="p-3 font-mono">LABEL maintainer="email"</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Exemple Dockerfile complet
+FROM ubuntu:20.04
+LABEL maintainer="tvaira@free.fr"
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y g++ make git
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY . /src/
+WORKDIR /src
+CMD ["make", "tests"]</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-yellow-500 pl-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">4.4 Docker Hub</h3>
+                        <p class="mb-4">Registre cloud pour stocker et partager des images Docker. <a href="https://hub.docker.com/" class="text-blue-600 underline">hub.docker.com</a></p>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker login
+docker tag mon-app:1.0 username/mon-app:1.0
+docker push username/mon-app:1.0
+docker pull username/mon-app:1.0</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-red-500 pl-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">4.5 Volume</h3>
+                        <p class="mb-4">Les volumes permettent de persister les données en dehors du cycle de vie du conteneur. Syntaxe : <code>VOLUME:CONTAINER_PATH[:ACCESS_MODE]</code></p>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Volume nommé
+docker volume create mon-data
+docker run -d -v mon-data:/data nginx
+
+# Bind mount (dossier local)
+docker run -d -v $(pwd):/app nginx
+
+# Volume en lecture seule
+docker run -d -v ./config:/app/config:ro nginx</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-indigo-500 pl-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">4.6 Network</h3>
+                        <p class="mb-4">Docker permet de créer des réseaux pour connecter les conteneurs entre eux.</p>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker network ls
+docker network create mon-reseau
+docker run -d --network mon-reseau --name app1 nginx</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Cycle de vie -->
+        <section class="section" id="section-4">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">5. Cycle de vie d'un container</h2>
+                
+                <div class="mb-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="text-center p-4 bg-blue-100 rounded-lg flex-1">
+                            <div class="text-3xl mb-2">📥</div>
+                            <h4 class="font-bold">1. Téléchargement</h4>
+                            <p class="text-sm">docker pull</p>
+                        </div>
+                        <div class="text-2xl text-gray-400">→</div>
+                        <div class="text-center p-4 bg-green-100 rounded-lg flex-1">
+                            <div class="text-3xl mb-2">🏗️</div>
+                            <h4 class="font-bold">2. Création</h4>
+                            <p class="text-sm">docker create</p>
+                        </div>
+                        <div class="text-2xl text-gray-400">→</div>
+                        <div class="text-center p-4 bg-yellow-100 rounded-lg flex-1">
+                            <div class="text-3xl mb-2">▶️</div>
+                            <h4 class="font-bold">3. Démarrage</h4>
+                            <p class="text-sm">docker start</p>
+                        </div>
+                        <div class="text-2xl text-gray-400">→</div>
+                        <div class="text-center p-4 bg-red-100 rounded-lg flex-1">
+                            <div class="text-3xl mb-2">⏹️</div>
+                            <h4 class="font-bold">4. Arrêt</h4>
+                            <p class="text-sm">docker stop</p>
+                        </div>
+                        <div class="text-2xl text-gray-400">→</div>
+                        <div class="text-center p-4 bg-gray-200 rounded-lg flex-1">
+                            <div class="text-3xl mb-2">🗑️</div>
+                            <h4 class="font-bold">5. Suppression</h4>
+                            <p class="text-sm">docker rm</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white border-2 border-blue-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-blue-800 mb-3">1. Téléchargement</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker pull nginx:latest</code></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white border-2 border-green-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-green-800 mb-3">2. Création</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker create --name mon-nginx -p 80:80 nginx
+# ou directement avec run (crée + démarre)
+docker run -d --name mon-nginx -p 80:80 nginx</code></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white border-2 border-yellow-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-yellow-800 mb-3">3. Démarrage</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker start mon-nginx
+docker ps
+docker logs mon-nginx</code></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white border-2 border-red-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-red-800 mb-3">4. Arrêt</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker stop mon-nginx
+# Forcer l'arrêt
+docker kill mon-nginx</code></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white border-2 border-gray-400 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">5. Suppression</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker rm mon-nginx
+docker rm -f mon-nginx
+docker container prune</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold mb-4">Nettoyer tout</h3>
+                    <div class="code-block bg-gray-900 p-4 rounded-lg">
+                        <pre><code># Arrêter tous les conteneurs
+docker stop $(docker ps -aq)
+# Supprimer tous les conteneurs
+docker rm $(docker ps -aq)
+# Supprimer toutes les images
+docker rmi $(docker images -q)
+# Tout nettoyer (conteneurs, réseaux, images non utilisés)
+docker system prune</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Commandes de base -->
+        <section class="section" id="section-5">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">6. Commandes de base</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Aide et informations</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code>docker --help
+docker info
+docker --version</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Lister</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Liste les images déjà téléchargées
+docker images
+
+# Liste tous les conteneurs (en cours ou arrêtés)
+docker ps -a
+
+# Affiche les informations système
+docker info</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Récupérer une image</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Recherche une image
+docker search hello-world
+
+# Récupère une image
+docker pull hello-world
+
+# Rechercher une image officielle
+docker search --filter "is-official=true" ubuntu</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Exécuter un conteneur</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Démarrer avec un nom personnalisé
+docker run --name &lt;nom_conteneur&gt; image
+
+# Mode interactif (shell)
+docker run -it --name &lt;nom_conteneur&gt; image shell
+
+# Démarrer ou arrêter un conteneur existant
+docker start|stop &lt;nom_conteneur&gt;
+
+# Ouvrir un shell dans un conteneur en cours
+docker exec -it &lt;nom_conteneur&gt; sh
+
+# Conteneur qui se supprime automatiquement
+docker run --rm --name=mon-conteneur hello-world</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Nettoyer</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Arrêter tous les conteneurs
+docker stop $(docker ps -aq)
+# Supprimer tous les conteneurs
+docker rm $(docker ps -aq)
+# Supprimer toutes les images
+docker rmi $(docker images -q)
+# Tout nettoyer
+docker system prune</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Surveillance</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Lister tous les conteneurs
+docker ps -a
+
+# Visualiser l'activité (logs)
+docker logs -ft &lt;CONTAINER ID&gt;
+
+# Visualiser les statistiques CPU/Mémoire/Réseau
+docker stats &lt;CONTAINER ID&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Docker Compose -->
+        <section class="section" id="section-6">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">7. Docker Compose</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">7.1 Qu'est-ce que Docker Compose ?</h3>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                        <p class="text-lg mb-4">Docker Compose est un outil permettant de définir et exécuter des applications à partir de <strong>multiples conteneurs</strong>. Lorsque plusieurs conteneurs doivent interagir (ex: un serveur web et une base de données), il est indispensable d'utiliser Docker Compose.</p>
+                        <p>La configuration est réalisée dans un fichier <code>docker-compose.yaml</code> (format YAML). Le démarrage est assuré par une commande unique <code>docker compose</code>.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">7.2 Instructions principales</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse bg-white shadow rounded-lg mb-4">
+                            <thead class="bg-blue-600 text-white">
+                                <tr>
+                                    <th class="p-3 text-left">Instruction</th>
+                                    <th class="p-3 text-left">Description</th>
+                                    <th class="p-3 text-left">Exemple</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">version</td><td class="p-3">Version du format YAML</td><td class="p-3 font-mono">version: '3'</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">services</td><td class="p-3">Liste des services (conteneurs)</td><td class="p-3 font-mono">services: web:</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">image</td><td class="p-3">Image utilisée</td><td class="p-3 font-mono">image: nginx:latest</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">ports</td><td class="p-3">Mappage de ports [HOST:]CONTAINER</td><td class="p-3 font-mono">- "8080:80"</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">volumes</td><td class="p-3">Montage de volumes</td><td class="p-3 font-mono">- ./app:/app</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">environment</td><td class="p-3">Variables d'environnement</td><td class="p-3 font-mono">MYSQL_ROOT_PASSWORD: 'pass'</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">build</td><td class="p-3">Configuration de construction</td><td class="p-3 font-mono">build: context: ./php</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">7.3 Exemple : environnement web PHP complet</h3>
+                    
+                    <h4 class="text-lg font-semibold mb-2">Étape 1 : Serveur web NGINX</h4>
+                    <div class="code-block p-4 rounded-lg mb-4">
+                        <pre><code>version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"</code></pre>
+                    </div>
+                    <p class="mb-4">Le port 80 du conteneur est accessible sur le port 8080 de la machine locale.</p>
+
+                    <h4 class="text-lg font-semibold mb-2">Étape 2 : Fichiers du serveur web</h4>
+                    <div class="code-block p-4 rounded-lg mb-4">
+                        <pre><code>version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./app:/app</code></pre>
+                    </div>
+
+                    <h4 class="text-lg font-semibold mb-2">Étape 3 : PHP-FPM</h4>
+                    <div class="code-block p-4 rounded-lg mb-4">
+                        <pre><code>version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./app:/app
+  php:
+    image: php:fpm-latest
+    volumes:
+      - ./app:/app</code></pre>
+                    </div>
+
+                    <h4 class="text-lg font-semibold mb-2">Étape 4 : MySQL/MariaDB</h4>
+                    <div class="code-block p-4 rounded-lg mb-4">
+                        <pre><code>version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./app:/app
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
+  mysql:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_USER: 'bts'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_DATABASE: 'bd'
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - 3306:3306
+volumes:
+  mysqldata: {}</code></pre>
+                    </div>
+
+                    <h4 class="text-lg font-semibold mb-2">Dockerfile pour l'extension PHP PDO MySQL</h4>
+                    <div class="code-block p-4 rounded-lg">
+                        <pre><code>FROM php:fpm
+RUN docker-php-ext-install pdo pdo_mysql</code></pre>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">7.4 Commandes Docker Compose</h3>
+                    <div class="code-block p-4 rounded-lg">
+                        <pre><code># Créer et démarrer en mode détaché
+docker compose up -d
+
+# Arrêter un service
+docker compose stop web
+
+# Lister les services
+docker compose ls
+docker compose ps
+
+# Voir les processus
+docker compose top
+
+# Arrêter et tout nettoyer
+docker compose down</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">7.5 Docker Desktop (GUI)</h3>
+                    <div class="bg-indigo-50 p-6 rounded-lg border border-indigo-200">
+                        <p class="mb-3">Docker Desktop est une application GUI pour créer, partager et exécuter des conteneurs, applications et images.</p>
+                        <p><strong>Lien :</strong> <a href="https://docs.docker.com/desktop/" class="text-blue-600 underline">docs.docker.com/desktop</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Manipulations -->
+        <section class="section" id="section-7">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">8. Manipulations pratiques</h2>
+                
+                <div class="space-y-8">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">8.1 Hello World!</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Démarrer un conteneur
+docker run hello-world
+
+# Lister les images
+docker images
+
+# Lister les conteneurs
+docker ps -a
+
+# Supprimer le conteneur
+docker rm f70adc74fc6a
+
+# Supprimer l'image
+docker rmi hello-world
+
+# Conteneur auto-suppressible
+docker run --rm --name=mon-conteneur hello-world</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">8.2 Ubuntu interactif</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Rechercher une image Ubuntu officielle
+docker search --filter "is-official=true" ubuntu
+
+# Récupérer une image
+docker pull ubuntu:16.04
+
+# Démarrer en mode interactif (shell bash)
+docker run -it --name=mon-ubuntu-1604 ubuntu:16.04 /bin/bash
+
+# Dans le conteneur :
+root@6662637532cd:/# cat /etc/os-release
+root@6662637532cd:/# apt-get update
+root@6662637532cd:/# exit
+
+# Redémarrer un conteneur nommé
+docker start mon-ubuntu-1604
+
+# Ouvrir un shell dans le conteneur
+docker exec -it mon-ubuntu-1604 /bin/bash
+
+# Exécuter une commande sans shell interactif
+docker exec mon-ubuntu-1604 cat /etc/os-release
+
+# Arrêter
+docker stop mon-ubuntu-1604</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">8.3 Environnement C/C++ avec Dockerfile</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Créer le Dockerfile
+mkdir ubuntu-dev && cd ubuntu-dev
+touch Dockerfile
+
+# Contenu du Dockerfile
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y g++ make git
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY . /src/
+WORKDIR /src
+CMD ["make", "tests"]
+
+# Construire l'image
+docker build -t tvaira/ubuntu-dev .
+
+# Exécuter le conteneur
+docker run -t tvaira/ubuntu-dev
+
+# Shell interactif
+docker run -ti tvaira/ubuntu-dev /bin/bash
+
+# Utiliser un volume pour ne pas reconstruire l'image
+docker run --rm -t -v .:/src tvaira/ubuntu-dev</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">8.4 Création et publication d'image (Bonus)</h3>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Modifier un conteneur (ex: installer des paquets)
+docker run -it tvaira/ubuntu-dev /bin/bash
+root@54fa5656a835:/# apt update
+root@54fa5656a835:/# apt install clang-format doxygen
+root@54fa5656a835:/# exit
+
+# Commit d'une nouvelle image
+docker commit -m "ajout clang-format et doxygen" -a "tvaira" \
+  54fa5656a835 tvaira/ubuntu-dev:latest
+
+# Se connecter à Docker Hub
+docker login -u tvaira
+
+# Tag et push
+docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+docker push tvaira/ubuntu-dev</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Réseau -->
+        <section class="section" id="section-8">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">9. Le réseau Docker</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">9.1 Types de réseaux</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse bg-white shadow rounded-lg mb-4">
+                            <thead class="bg-blue-600 text-white">
+                                <tr>
+                                    <th class="p-3 text-left">Pilote</th>
+                                    <th class="p-3 text-left">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">none</td><td class="p-3">Aucune interface réseau (sauf loopback) - isolation complète</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">bridge</td><td class="p-3">Réseau par défaut, conteneurs communiquent entre eux mais pas accessibles de l'extérieur (sauf mappage de ports)</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">host</td><td class="p-3">Utilise la même interface réseau que la machine hôte - aucune isolation réseau</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">overlay</td><td class="p-3">Connecte plusieurs démons Docker ensemble</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">ipvlan</td><td class="p-3">Contrôle sur l'adressage IPv4 et IPv6</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="p-3 font-mono font-bold">macvlan</td><td class="p-3">Attribue une adresse MAC à un conteneur</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">9.2 Le réseau bridge par défaut</h3>
+                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                        <p class="mb-3">L'installation Docker crée un réseau <strong>bridge</strong> connecté à l'interface <code>docker0</code> (172.17.0.0/16). Chaque nouveau conteneur est automatiquement connecté à ce réseau.</p>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># Vérifier l'interface docker0
+ifconfig docker0
+ip addr show docker0
+
+# Lister les réseaux
+docker network ls
+
+# Inspecter un réseau
+docker network inspect &lt;NETWORK_ID&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">9.3 Gestion des réseaux</h3>
+                    <div class="code-block p-4 rounded-lg">
+                        <pre><code># Commandes disponibles
+docker network COMMAND
+  connect     Connecter un conteneur
+  create      Créer un réseau
+  disconnect  Déconnecter un conteneur
+  inspect     Afficher les détails
+  ls          Lister les réseaux
+  prune       Supprimer les réseaux inutilisés
+  rm          Supprimer un réseau
+
+# Créer un nouveau réseau bridge
+docker network create --driver bridge mon-reseau \
+  --subnet=172.16.0.0/16 --gateway=172.16.0.1
+
+# Lister les réseaux
+docker network ls
+
+# Lancer des conteneurs sur le nouveau réseau
+docker run -dit --rm --network=mon-reseau --name=conteneur1 alpine
+docker run -dit --rm --network=mon-reseau --name=conteneur2 alpine
+
+# Communication entre conteneurs
+docker exec conteneur1 ping -c 1 172.16.0.3
+
+# Nettoyage
+docker network disconnect mon-reseau conteneur1
+docker network disconnect mon-reseau conteneur2
+docker network rm mon-reseau</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">9.4 Options utiles de docker run</h3>
+                    <div class="code-block p-4 rounded-lg">
+                        <pre><code>--network network    Connecter à un réseau
+--add-host list      Mapping host-to-IP personnalisé
+--ip string          Adresse IPv4
+--ip6 string         Adresse IPv6
+--mac-address string Adresse MAC
+--user uid:gid       Exécuter avec un utilisateur spécifique
+--workdir dir        Répertoire de travail
+--volume src:dst     Montage de volume</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: TP -->
+        <section class="section" id="section-9">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6">10. Travaux Pratiques (TP)</h2>
+                
+                <!-- Installation et vérification -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Partie 1 : Installation et vérification</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                            <h4 class="text-xl font-bold text-blue-800 mb-3">Question 1</h4>
+                            <p>Installer <code>docker-ce</code> et <code>docker-desktop</code> (facultatif).</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code># Installation de docker-ce
+sudo apt update
+sudo apt install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                            <h4 class="text-xl font-bold text-green-800 mb-3">Question 2</h4>
+                            <p>Déterminer les versions installées (les paquets, <code>docker</code>, <code>docker-compose</code> et Docker Engine).</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker --version
+docker compose version
+docker version</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 p-6 rounded-lg border border-purple-200">
+                            <h4 class="text-xl font-bold text-purple-800 mb-3">Question 3</h4>
+                            <p>Vérifier l'état du service docker (<code>docker.service</code>).</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>systemctl status docker</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-orange-50 p-6 rounded-lg border border-orange-200">
+                            <h4 class="text-xl font-bold text-orange-800 mb-3">Question 4</h4>
+                            <p>Vérifier le bon fonctionnement de Docker en démarrant un conteneur à partir de l'image <code>hello-world</code>.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker run hello-world</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                            <h4 class="text-xl font-bold text-red-800 mb-3">Question 5</h4>
+                            <p>Lister les images et tous les conteneurs présents localement.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker images
+docker ps -a</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
+                            <h4 class="text-xl font-bold text-yellow-800 mb-3">Question 6</h4>
+                            <p>Supprimer le conteneur et l'image <code>hello-world</code>.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker ps -a  # noter le CONTAINER ID
+docker rm &lt;CONTAINER_ID&gt;
+docker rmi hello-world</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premier pas -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Partie 2 : Premier pas</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-teal-50 p-6 rounded-lg border border-teal-200">
+                            <h4 class="text-xl font-bold text-teal-800 mb-3">Question 7</h4>
+                            <p>Rechercher les images <code>alpine</code> officielles. Qu'est-ce qu'"Alpine Linux" ? Quelle est sa principale particularité ? Comparer la taille de l'image "Alpine Linux" avec la taille d'une image "Ubuntu".</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker search --filter "is-official=true" alpine
+docker pull alpine:latest
+docker images  # comparer les tailles avec ubuntu</code></pre>
+                            </div>
+                            <div class="mt-3 bg-white p-4 rounded border">
+                                <p><strong>Réponse :</strong> Alpine Linux est une distribution Linux légère basée sur musl libc et busybox. Sa principale particularité est sa <strong>taille minimale</strong> (~5 Mo) comparée à Ubuntu (~70-135 Mo), ce qui en fait une base idéale pour des conteneurs optimisés.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyan-50 p-6 rounded-lg border border-cyan-200">
+                            <h4 class="text-xl font-bold text-cyan-800 mb-3">Question 8</h4>
+                            <p>Démarrer un conteneur (avec le nom <code>mon-alpine</code>) en mode interactif (un shell <code>sh</code>) à partir de la dernière version (<code>latest</code>) d'alpine officielle.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker run -it --name=mon-alpine alpine:latest /bin/sh</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-indigo-50 p-6 rounded-lg border border-indigo-200">
+                            <h4 class="text-xl font-bold text-indigo-800 mb-3">Question 9</h4>
+                            <p>Identifier la version d'alpine avec la commande <code>cat /etc/os-release</code>.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>cat /etc/os-release</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-pink-50 p-6 rounded-lg border border-pink-200">
+                            <h4 class="text-xl font-bold text-pink-800 mb-3">Question 10</h4>
+                            <p>Quel est le compte de la session alpine ?</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>whoami
+# Réponse : root</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-lime-50 p-6 rounded-lg border border-lime-200">
+                            <h4 class="text-xl font-bold text-lime-800 mb-3">Question 11</h4>
+                            <p>Visualiser l'activité (log) du conteneur. Vous pouvez supprimer le conteneur et l'image.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker logs -ft mon-alpine
+# Supprimer
+docker stop mon-alpine
+docker rm mon-alpine
+docker rmi alpine:latest</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dockerfile -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Partie 3 : Dockerfile</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200">
+                            <h4 class="text-xl font-bold text-amber-800 mb-3">Question 12</h4>
+                            <p>Fournir le fichier Dockerfile pour créer une image <code>ubuntu-22.04</code> (basée sur Ubuntu 22.04 LTS) contenant les paquets <code>g++</code>, <code>make</code>, <code>git</code>.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code># Dockerfile pour ubuntu-22.04
+FROM ubuntu:22.04
+RUN apt-get update && apt-get install -y g++ make git
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-50 p-6 rounded-lg border border-emerald-200">
+                            <h4 class="text-xl font-bold text-emerald-800 mb-3">Question 13</h4>
+                            <p>Démarrer un conteneur à partir de l'image créée en mode interactif puis vérifier l'installation des paquets.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code># Construire l'image
+docker build -t ubuntu-22.04 .
+
+# Démarrer en mode interactif
+docker run -it --name=test-ubuntu-2204 ubuntu-22.04 /bin/bash
+
+# Vérifier les paquets dans le conteneur
+g++ --version
+make --version
+git --version</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-lg border border-sky-200">
+                            <h4 class="text-xl font-bold text-sky-800 mb-3">Question 14</h4>
+                            <p>Supprimer le conteneur et l'image.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker stop test-ubuntu-2204
+docker rm test-ubuntu-2204
+docker rmi ubuntu-22.04</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-violet-50 p-6 rounded-lg border border-violet-200">
+                            <h4 class="text-xl font-bold text-violet-800 mb-3">Question 15</h4>
+                            <p>Réaliser la manipulation "Environnement de développement C/C++" décrite dans le cours (section 8.3).</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>mkdir ubuntu-dev && cd ubuntu-dev
+# Créer le Dockerfile (voir section 8.3 du cours)
+docker build -t mon-ubuntu-dev .
+docker run -t mon-ubuntu-dev
+# Avec volume pour éviter de reconstruire
+docker run --rm -t -v .:/src mon-ubuntu-dev</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Docker Compose -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Partie 4 : Docker Compose</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-rose-50 p-6 rounded-lg border border-rose-200">
+                            <h4 class="text-xl font-bold text-rose-800 mb-3">Question 16</h4>
+                            <p>Fournir le fichier <code>docker-compose.yml</code> pour créer un service web avec nginx (version <code>1.25.0</code>) sur le port <code>5000</code> de la machine locale.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>version: '3'
+services:
+  web:
+    image: nginx:1.25.0
+    ports:
+      - "5000:80"</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-fuchsia-50 p-6 rounded-lg border border-fuchsia-200">
+                            <h4 class="text-xl font-bold text-fuchsia-800 mb-3">Question 17</h4>
+                            <p>Démarrer le serveur. Afficher les images, conteneurs et processus.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>docker compose up -d
+docker images
+docker ps -a
+docker compose top</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                            <h4 class="text-xl font-bold text-blue-800 mb-3">Question 18</h4>
+                            <p>Tester le serveur avec un client HTTP. Fournir le résultat obtenu avec <code>curl</code>. Puis arrêter le service web.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code>curl http://127.0.0.1:5000
+docker compose stop web</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                            <h4 class="text-xl font-bold text-green-800 mb-3">Question 19</h4>
+                            <p>Terminer la manipulation "Environnement de développement web PHP" décrite dans le cours (section 7.3) : configurer nginx, PHP-FPM, MySQL/MariaDB avec l'extension PDO MySQL.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code># Suivre les étapes 1 à 4 de la section 7.3 du cours
+# Créer les fichiers :
+# - docker-compose.yml (avec web, php, mysql)
+# - nginx.conf
+# - php/Dockerfile
+# - app/public/index.php
+
+# Démarrer tout
+docker compose up -d
+
+# Tester dans le navigateur : http://127.0.0.1:8080</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                            <h4 class="text-xl font-bold text-red-800 mb-3">Question 20</h4>
+                            <p>Arrêter les services. Puis nettoyer les conteneurs, les ressources et les images.</p>
+                            <div class="code-block p-4 rounded-lg mt-3">
+                                <pre><code># Arrêter les services
+docker compose down
+
+# Nettoyer tout
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
+docker system prune</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Partie 5 : Bonus - Création et publication d'image</h3>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-lg border border-yellow-300">
+                        <p class="mb-4">Modifier un conteneur, créer une nouvelle image et la publier sur Docker Hub.</p>
+                        <div class="code-block p-4 rounded-lg">
+                            <pre><code># 1. Modifier un conteneur
+docker run -it tvaira/ubuntu-dev /bin/bash
+root@container:/# apt update
+root@container:/# apt install clang-format doxygen
+root@container:/# exit
+
+# 2. Commit d'une nouvelle image
+docker ps -a  # noter le CONTAINER ID
+docker commit -m "ajout clang-format et doxygen" -a "votre_nom" \
+  &lt;CONTAINER_ID&gt; votre_nom/ubuntu-dev:latest
+
+# 3. Se connecter à Docker Hub
+docker login -u votre_nom
+
+# 4. Tag et publication
+docker tag votre_nom/ubuntu-dev:latest votre_nom/ubuntu-dev:latest
+docker push votre_nom/ubuntu-dev</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liens utiles -->
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Liens utiles</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2">Documentation officielle</h4>
+                            <ul class="space-y-1 text-sm">
+                                <li><a href="https://docs.docker.com/engine/" class="text-blue-600 underline">Docker Engine</a></li>
+                                <li><a href="https://docs.docker.com/engine/reference/builder/" class="text-blue-600 underline">Dockerfile reference</a></li>
+                                <li><a href="https://docs.docker.com/compose/" class="text-blue-600 underline">Docker Compose</a></li>
+                                <li><a href="https://docs.docker.com/network/" class="text-blue-600 underline">Docker Network</a></li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2">Ressources</h4>
+                            <ul class="space-y-1 text-sm">
+                                <li><a href="https://hub.docker.com/" class="text-blue-600 underline">Docker Hub</a></li>
+                                <li><a href="https://docker-curriculum.com/" class="text-blue-600 underline">Tutoriel d'introduction</a></li>
+                                <li><a href="https://training.play-with-docker.com/" class="text-blue-600 underline">Play with Docker (en ligne)</a></li>
+                                <li><a href="https://docs.docker.com/getstarted/docker_cheatsheet.pdf" class="text-blue-600 underline">Docker CLI Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4 mt-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-xl mb-2">🐳 Cours sur la Conteneurisation et Docker</p>
+            <p class="text-gray-400">Thierry Vaira : thierry.vaira@gmail.com</p>
+        </div>
+    </footer>
+
+    <script>
+        function showSection(index) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`section-${index}`).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach((item, i) => {
+                if (i === index) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                const current = document.querySelector('.nav-item.active');
+                const next = current.nextElementSibling;
+                if (next) next.click();
+            } else if (e.key === 'ArrowLeft') {
+                const current = document.querySelector('.nav-item.active');
+                const prev = current.previousElementSibling;
+                if (prev) prev.click();
+            }
+        });
+    </script>
+</body>
+</html>
