@@ -148,12 +148,29 @@ docker run hello-world
 **Partie 5 : Bonus**
 - Modification, commit et publication d'image sur Docker Hub
 
-## 📂 Fichiers
+## 📂 Structure du projet
 
-| Fichier | Description |
-|---------|-------------|
-| `index.html` | Cours interactif complet (10 sections avec navigation par onglets) |
-| `README.md` | Documentation du projet |
+```
+devops/
+├── index.html              # Page principale (layout avec sidebar)
+├── README.md               # Documentation
+├── css/
+│   └── style.css           # Styles complets (responsive, print, animations)
+└── js/
+    ├── content.js          # Données du cours (10 sections, pattern IIFE)
+    ├── navigation.js       # Navigation (sidebar, clavier, localStorage)
+    ├── renderer.js         # Rendu dynamique sidebar + contenu
+    └── main.js             # Point d'entrée et initialisation
+```
+
+**Architecture modulaire :** Chaque module est un IIFE qui expose une API publique via un retour d'objet. Pas de dépendance externe, pas de framework.
+
+| Module | Rôle |
+|--------|------|
+| `content.js` | Données du cours dans `CourseContent` (getter, catégories) |
+| `navigation.js` | Navigation, sidebar mobile, clavier, breadcrumbs, progression |
+| `renderer.js` | Génération dynamique du sidebar et des sections HTML |
+| `main.js` | Wiring des modules, gestion des boutons préc/suiv |
 
 ## 🔗 Liens utiles
 
