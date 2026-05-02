@@ -1,14 +1,15 @@
-const CourseContent = (() => {
-
-    const sections = [
-        {
-            id: 'conteneurisation',
-            number: '01',
-            title: 'Conteneurisation',
-            icon: '📦',
-            category: 'Fondamentaux',
-            subtitle: 'Comprendre la technologie de conteneurisation moderne',
-            html: `
+// ==========================================
+// CONTENT — Toutes les données du cours
+// ==========================================
+const sections = [
+    {
+        id: 'conteneurisation',
+        number: '01',
+        title: 'Conteneurisation',
+        icon: '📦',
+        category: 'Fondamentaux',
+        subtitle: 'Comprendre la technologie de conteneurisation moderne',
+        html: `
                 <div class="card card-gradient">
                     <p class="text-lg">La <strong>conteneurisation</strong> est une technologie de virtualisation au niveau du système d'exploitation qui permet d'exécuter des applications dans des environnements isolés appelés <strong>conteneurs</strong>.</p>
                 </div>
@@ -32,15 +33,15 @@ const CourseContent = (() => {
                     <table>
                         <thead><tr><th>Année</th><th>Événement</th></tr></thead>
                         <tbody>
-                            <tr><td>1979</td><td><code>chroot</code> - Premier changement de racine Unix</td></tr>
-                            <tr><td>2000</td><td><code>FreeBSD Jails</code> - Isolation de systèmes de fichiers</td></tr>
-                            <tr><td>2001</td><td><code>VServer</code> - Isolation de serveurs sous Linux</td></tr>
-                            <tr><td>2004</td><td><code>Solaris Zones</code> - Virtualisation légère par Oracle</td></tr>
-                            <tr><td>2006</td><td><code>Google Process Container</code> - Ancêtre des cgroups</td></tr>
-                            <tr><td>2008</td><td><code>LXC</code> (Linux Containers) - Premier conteneur Linux complet</td></tr>
-                            <tr><td>2013</td><td><strong>Docker</strong> - Révolution de la conteneurisation</td></tr>
-                            <tr><td>2015</td><td><strong>OCI</strong> (Open Container Initiative) - Standardisation</td></tr>
-                            <tr><td>2017</td><td><strong>containerd</strong> - Runtime industriel</td></tr>
+                            <tr><td>1979</td><td><code>chroot</code> — Premier changement de racine Unix</td></tr>
+                            <tr><td>2000</td><td><code>FreeBSD Jails</code> — Isolation de systèmes de fichiers</td></tr>
+                            <tr><td>2001</td><td><code>VServer</code> — Isolation de serveurs sous Linux</td></tr>
+                            <tr><td>2004</td><td><code>Solaris Zones</code> — Virtualisation légère par Oracle</td></tr>
+                            <tr><td>2006</td><td><code>Google Process Container</code> — Ancêtre des cgroups</td></tr>
+                            <tr><td>2008</td><td><code>LXC</code> (Linux Containers) — Premier conteneur Linux complet</td></tr>
+                            <tr><td>2013</td><td><strong>Docker</strong> — Révolution de la conteneurisation</td></tr>
+                            <tr><td>2015</td><td><strong>OCI</strong> (Open Container Initiative) — Standardisation</td></tr>
+                            <tr><td>2017</td><td><strong>containerd</strong> — Runtime industriel</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -95,15 +96,15 @@ const CourseContent = (() => {
                     <li><strong>Batch processing</strong> : Exécution de tâches éphémères à grande échelle</li>
                 </ul>
             `
-        },
-        {
-            id: 'vm-vs-container',
-            number: '02',
-            title: 'VM vs Container',
-            icon: '⚖️',
-            category: 'Fondamentaux',
-            subtitle: 'Comprendre les différences entre virtualisation classique et conteneurisation',
-            html: `
+    },
+    {
+        id: 'vm-vs-container',
+        number: '02',
+        title: 'VM vs Container',
+        icon: '⚖️',
+        category: 'Fondamentaux',
+        subtitle: 'Comprendre les différences entre virtualisation classique et conteneurisation',
+        html: `
                 <h3>2.1 Architecture Machine Virtuelle</h3>
                 <p>Une VM exécute un <strong>système d'exploitation invité complet</strong> avec un accès virtuel aux ressources via un hyperviseur.</p>
                 <div class="diagram">┌──────────────────────────────────────┐
@@ -187,15 +188,15 @@ const CourseContent = (() => {
                     </div>
                 </div>
             `
-        },
-        {
-            id: 'docker',
-            number: '03',
-            title: 'Docker',
-            icon: '🐳',
-            category: 'Docker',
-            subtitle: 'Présentation, installation et architecture de Docker',
-            html: `
+    },
+    {
+        id: 'docker',
+        number: '03',
+        title: 'Docker',
+        icon: '🐳',
+        category: 'Docker',
+        subtitle: 'Présentation, installation et architecture de Docker',
+        html: `
                 <div class="card card-gradient">
                     <p><strong>Docker</strong> est une plateforme open-source qui automatise le déploiement d'applications dans des conteneurs. Elle fournit des outils pour créer, déployer et exécuter des applications conteneurisées de manière standardisée.</p>
                 </div>
@@ -247,8 +248,8 @@ docker --version
 docker compose version</code></div>
 
                 <h4>Étape 7 : Configuration des permissions</h4>
-                <div class="code-block"><code>sudo usermod -aG docker ${USER}
-su - ${USER}</code></div>
+                <div class="code-block"><code>sudo usermod -aG docker $\\{USER\\}
+su - $\\{USER\\}</code></div>
 
                 <h3>3.3 Architecture Docker Engine</h3>
                 <div class="diagram">┌──────────────┐        REST API        ┌──────────────┐
@@ -318,15 +319,15 @@ su - ${USER}</code></div>
                     <li><strong>Lien :</strong> <a href="https://docs.docker.com/desktop/">docs.docker.com/desktop</a></li>
                 </ul>
             `
-        },
-        {
-            id: 'composants',
-            number: '04',
-            title: 'Composants',
-            icon: '🧩',
-            category: 'Docker',
-            subtitle: 'Images, containers, Dockerfile, volumes, registres',
-            html: `
+    },
+    {
+        id: 'composants',
+        number: '04',
+        title: 'Composants',
+        icon: '🧩',
+        category: 'Docker',
+        subtitle: 'Images, containers, Dockerfile, volumes, registres',
+        html: `
                 <h3>4.1 Image Docker</h3>
                 <div class="card card-info">
                     <p>Une image est un <strong>modèle en lecture seule</strong> avec des instructions pour créer un conteneur. C'est l'équivalent d'un template ou d'un blueprint.</p>
@@ -448,7 +449,7 @@ LABEL description="Application Node.js en conteneur"
 
 # Arguments de build
 ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=$\\{NODE_ENV\\}
 
 # Répertoire de travail
 WORKDIR /app
@@ -548,15 +549,15 @@ docker commit -m "description" -a "auteur" &lt;container_id&gt; badara/mon-app:2
 # Se déconnecter
 docker logout</code></div>
             `
-        },
-        {
-            id: 'cycle-de-vie',
-            number: '05',
-            title: 'Cycle de vie',
-            icon: '🔄',
-            category: 'Docker',
-            subtitle: 'Les étapes de vie d\'un conteneur de la création à la suppression',
-            html: `
+    },
+    {
+        id: 'cycle-de-vie',
+        number: '05',
+        title: 'Cycle de vie',
+        icon: '🔄',
+        category: 'Docker',
+        subtitle: "Les étapes de vie d'un conteneur de la création à la suppression",
+        html: `
                 <h3>5.1 Diagramme du cycle de vie</h3>
                 <div class="lifecycle">
                     <div class="lifecycle-step">
@@ -620,12 +621,12 @@ docker create --name mon-db -e MYSQL_ROOT_PASSWORD=secret mysql</code></div>
 docker run -d --name mon-nginx nginx
 
 # Run complet avec toutes les options
-docker run -d \
-  --name mon-app \
-  -p 3000:3000 \
-  -v $(pwd):/app \
-  -e NODE_ENV=production \
-  --restart unless-stopped \
+docker run -d \\
+  --name mon-app \\
+  -p 3000:3000 \\
+  -v $(pwd):/app \\
+  -e NODE_ENV=production \\
+  --restart unless-stopped \\
   mon-app:1.0
 
 # Options importantes de docker run :
@@ -688,15 +689,15 @@ docker system prune -a --volumes  # attention : supprime TOUT</code></div>
                     </table>
                 </div>
             `
-        },
-        {
-            id: 'commandes',
-            number: '06',
-            title: 'Commandes',
-            icon: '💻',
-            category: 'Docker',
-            subtitle: 'Référence complète des commandes Docker essentielles',
-            html: `
+    },
+    {
+        id: 'commandes',
+        number: '06',
+        title: 'Commandes',
+        icon: '💻',
+        category: 'Docker',
+        subtitle: 'Référence complète des commandes Docker essentielles',
+        html: `
                 <h3>6.1 Commandes de gestion des images</h3>
                 <div class="code-block"><code># Rechercher
 docker search &lt;terme&gt;
@@ -758,7 +759,7 @@ docker logs -f &lt;nom&gt;        # follow
 docker logs --tail 50 &lt;nom&gt; # dernières lignes
 docker logs --since 1h &lt;nom&gt;
 
-# Stats & Infos
+# Stats &amp; Infos
 docker stats
 docker stats &lt;nom&gt;
 docker top &lt;nom&gt;
@@ -800,15 +801,15 @@ alias drmall='docker rm $(docker ps -aq)'
 alias dclean='docker system prune -af --volumes'
 alias dlogs='docker logs -f'</code></div>
             `
-        },
-        {
-            id: 'docker-compose',
-            number: '07',
-            title: 'Docker Compose',
-            icon: '📋',
-            category: 'Docker',
-            subtitle: 'Orchestrer plusieurs conteneurs avec docker-compose.yml',
-            html: `
+    },
+    {
+        id: 'docker-compose',
+        number: '07',
+        title: 'Docker Compose',
+        icon: '📋',
+        category: 'Docker',
+        subtitle: 'Orchestrer plusieurs conteneurs avec docker-compose.yml',
+        html: `
                 <div class="card card-gradient">
                     <p><strong>Docker Compose</strong> est un outil pour définir et exécuter des applications multi-conteneurs. Il utilise un fichier YAML pour configurer les services, réseaux et volumes.</p>
                 </div>
@@ -967,19 +968,19 @@ volumes:
                     <h4>./php/Dockerfile</h4>
                     <div class="code-block"><code>FROM php:8.2-fpm
 RUN docker-php-ext-install pdo pdo_mysql mysqli
-RUN apt-get update && apt-get install -y libzip-dev && \
+RUN apt-get update && apt-get install -y libzip-dev && \\
     docker-php-ext-install zip</code></div>
                 </div>
             `
-        },
-        {
-            id: 'manipulations',
-            number: '08',
-            title: 'Manipulations',
-            icon: '🛠️',
-            category: 'Pratique',
-            subtitle: 'Exercices pratiques : Hello World, Ubuntu, C/C++, publication',
-            html: `
+    },
+    {
+        id: 'manipulations',
+        number: '08',
+        title: 'Manipulations',
+        icon: '🛠️',
+        category: 'Pratique',
+        subtitle: 'Exercices pratiques : Hello World, Ubuntu, C/C++, publication',
+        html: `
                 <h3>8.1 Hello World!</h3>
                 <div class="code-block"><code># Exécuter le conteneur Hello World
 docker run hello-world
@@ -1032,10 +1033,10 @@ mkdir cpp-dev && cd cpp-dev
 # Créer le Dockerfile
 cat > Dockerfile << 'EOF'
 FROM ubuntu:22.04
-RUN apt-get update && apt-get install -y \
-    g++ \
-    make \
-    git \
+RUN apt-get update && apt-get install -y \\
+    g++ \\
+    make \\
+    git \\
     && rm -rf /var/lib/apt/lists/*
 COPY . /src/
 WORKDIR /src
@@ -1079,10 +1080,10 @@ root@container:# apt install -y curl vim git htop
 root@container:# exit
 
 # 2. Créer une nouvelle image (commit)
-docker commit \
-  -m "Ajout curl, vim, git, htop" \
-  -a "badara" \
-  modif \
+docker commit \\
+  -m "Ajout curl, vim, git, htop" \\
+  -a "badara" \\
+  modif \\
   badara/ubuntu-dev:1.0
 
 # 3. Vérifier l'image
@@ -1097,15 +1098,15 @@ docker login -u badara
 # 6. Publier
 docker push badara/ubuntu-dev:1.0</code></div>
             `
-        },
-        {
-            id: 'reseau',
-            number: '09',
-            title: 'Réseau',
-            icon: '🌐',
-            category: 'Docker',
-            subtitle: 'Configuration réseau, pilotes et communication entre conteneurs',
-            html: `
+    },
+    {
+        id: 'reseau',
+        number: '09',
+        title: 'Réseau',
+        icon: '🌐',
+        category: 'Docker',
+        subtitle: 'Configuration réseau, pilotes et communication entre conteneurs',
+        html: `
                 <div class="card card-info">
                     <p>Docker fournit un système de réseau puissant permettant aux conteneurs de communiquer entre eux et avec le monde extérieur.</p>
                 </div>
@@ -1142,16 +1143,16 @@ docker network inspect bridge</code></div>
 docker network create mon-reseau
 
 # Avec subnet et gateway personnalisés
-docker network create \
-  --driver bridge \
-  --subnet=172.16.0.0/16 \
-  --gateway=172.16.0.1 \
+docker network create \\
+  --driver bridge \\
+  --subnet=172.16.0.0/16 \\
+  --gateway=172.16.0.1 \\
   mon-reseau
 
 # Créer un réseau avec DNS personnalisé
-docker network create \
-  --opt com.docker.network.bridge.enable_ip_masquerade=true \
-  --opt com.docker.network.bridge.enable_icc=true \
+docker network create \\
+  --opt com.docker.network.bridge.enable_ip_masquerade=true \\
+  --opt com.docker.network.bridge.enable_icc=true \\
   mon-reseau
 
 # Lancer des conteneurs sur le réseau
@@ -1199,15 +1200,15 @@ docker port &lt;conteneur&gt;
 # Exposer sans mapper (accessible uniquement depuis d'autres conteneurs)
 docker run -d --expose 80 nginx</code></div>
             `
-        },
-        {
-            id: 'tp',
-            number: '10',
-            title: 'TP',
-            icon: '📝',
-            category: 'Pratique',
-            subtitle: 'Travaux pratiques : 20 exercices progressifs',
-            html: `
+    },
+    {
+        id: 'tp',
+        number: '10',
+        title: 'TP',
+        icon: '📝',
+        category: 'Pratique',
+        subtitle: 'Travaux pratiques : 20 exercices progressifs',
+        html: `
                 <div class="card card-gradient">
                     <p>Ce TP est composé de <strong>5 parties</strong> progressives, allant de l'installation à la création d'une stack complète.</p>
                 </div>
@@ -1227,10 +1228,10 @@ sudo apt install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-  https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+echo \\
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \\
+  https://download.docker.com/linux/ubuntu \\
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \\
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></div>
@@ -1307,7 +1308,7 @@ docker rmi alpine:latest</code></div>
                 <div class="card card-warning">
                     <h4>Question 12 : Dockerfile ubuntu-22.04 avec g++, make, git</h4>
                     <div class="code-block"><code>FROM ubuntu:22.04
-RUN apt-get update && apt-get install -y g++ make git \
+RUN apt-get update && apt-get install -y g++ make git \\
     && rm -rf /var/lib/apt/lists/*</code></div>
                 </div>
 
@@ -1387,34 +1388,28 @@ docker login -u badara
 docker push badara/ubuntu-dev:tools</code></div>
                 </div>
             `
-        }
-    ];
-
-    function getSections() {
-        return sections;
     }
+];
 
-    function getSectionById(id) {
-        return sections.find(s => s.id === id);
-    }
+function getSections() {
+    return sections;
+}
 
-    function getSectionByIndex(index) {
-        return sections[index] || null;
-    }
+function getSectionById(id) {
+    return sections.find(s => s.id === id);
+}
 
-    function getCategories() {
-        const cats = {};
-        sections.forEach(s => {
-            if (!cats[s.category]) cats[s.category] = [];
-            cats[s.category].push(s);
-        });
-        return cats;
-    }
+function getSectionByIndex(index) {
+    return sections[index] || null;
+}
 
-    return {
-        getSections,
-        getSectionById,
-        getSectionByIndex,
-        getCategories
-    };
-})();
+function getCategories() {
+    const cats = {};
+    sections.forEach(s => {
+        if (!cats[s.category]) cats[s.category] = [];
+        cats[s.category].push(s);
+    });
+    return cats;
+}
+
+export { getSections, getSectionById, getSectionByIndex, getCategories };
